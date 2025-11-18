@@ -4,7 +4,7 @@
 
 **La Plataforma de Investigación de Seguridad** es una aplicación Interactiva de Amenazas a Datos desplegada como una *Single Page Application* (SPA). Este proyecto consolida conocimientos de seguridad y amenazas modernas.
 
-🔗 **([👉 Ver en: Investigación de Seguridad de Datos](https://isa-bos-dev.github.io/Investigación_Seguridad_Datos/))**  
+🔗 **([👉 Ver en: Investigación de Seguridad de Datos](https://isa-bos-dev.github.io/Investigacion_Seguridad_Datos/))**  
 
 -----
 
