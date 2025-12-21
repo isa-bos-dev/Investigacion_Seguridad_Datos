@@ -97,6 +97,15 @@
                     </ul>
                 </div>
             </div>
+            <div class="glass-card p-6 rounded-xl flex flex-col justify-center items-center text-center mt-6">
+                <h3 class="text-lg font-semibold mb-2" style="color: var(--text-primary);">Eficiencia de Auditoría por Vector</h3>
+                <div class="w-full h-64 relative">
+                    <canvas id="auditSpeedChart"></canvas> 
+                </div>
+                <p class="text-[10px] mt-2" style="color: var(--text-secondary);">
+                    *Representación del tiempo relativo de exfiltración. Las técnicas "Blind" requieren un mayor número de peticiones al servidor.
+                </p>
+            </div>
         </section>
 
         <!-- SECTION 2: SQL Injection Techniques -->
@@ -337,63 +346,97 @@
                         <h3 class="text-xl font-bold" style="color: var(--text-primary);">MongoDB</h3>
                         <span class="px-2 py-1 bg-success-soft text-success text-xs rounded">Document Store</span>
                     </div>
-                    
+        
                     <div class="space-y-4">
                         <div class="p-4 rounded-lg" style="background-color: var(--bg-primary);">
                             <h4 class="text-sm font-bold mb-2" style="color: var(--text-primary);">Bypass de Login (PHP)</h4>
-                            <p class="text-xs mb-2" style="color: var(--text-secondary);">PHP convierte arrays en objetos JSON query.</p>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">PHP convierte arrays en objetos JSON
+                                query.</p>
                             <div class="code-block p-2 rounded text-xs">
                                 user=admin&pass[$ne]=1
                             </div>
-                            <p class="text-[10px] mt-1" style="color: var(--text-secondary);">Consulta: password "NOT EQUAL" 1 -> TRUE.</p>
+                            <p class="text-[10px] mt-1" style="color: var(--text-secondary);">Consulta: password "NOT EQUAL" 1
+                                -> TRUE.</p>
                         </div>
-
+        
                         <div class="p-4 rounded-lg" style="background-color: var(--bg-primary);">
-                            <h4 class="text-sm font-bold mb-2" style="color: var(--text-primary);">Inyección JavaScript ($where)</h4>
-                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Ejecución de código arbitrario en el servidor DB.</p>
+                            <h4 class="text-sm font-bold mb-2" style="color: var(--text-primary);">Inyección JavaScript ($where)
+                            </h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Ejecución de código arbitrario en el
+                                servidor DB.</p>
                             <div class="code-block p-2 rounded text-xs">
                                 '; while(1); //
                             </div>
-                            <p class="text-[10px] mt-1" style="color: var(--text-secondary);">Ataque de Denegación de Servicio (DoS).</p>
+                            <p class="text-[10px] mt-1" style="color: var(--text-secondary);">Ataque de Denegación de Servicio
+                                (DoS).</p>
                         </div>
                     </div>
                 </div>
-
+        
                 <!-- Redis CRLF Injection & GraphQL Attacks -->
                 <div class="glass-card p-6 rounded-xl border-t-4" style="border-color: var(--color-error);">
                     <div class="flex justify-between mb-4">
                         <h3 class="text-xl font-bold" style="color: var(--text-primary);">Redis & GraphQL</h3>
                         <span class="px-2 py-1 bg-error-soft text-error text-xs rounded">In-Memory & API</span>
                     </div>
-
+        
                     <div class="space-y-4">
                         <div class="p-4 rounded-lg relative" style="background-color: var(--bg-primary);">
                             <div class="absolute top-2 right-2 text-error text-xs font-bold">RCE</div>
                             <h4 class="text-sm font-bold mb-1" style="color: var(--text-primary);">Redis Injection</h4>
-                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Redis a menudo corre como root sin pass. Inyectar saltos de línea (CRLF) permite ejecutar comandos.</p>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Redis a menudo corre como root sin
+                                pass. Inyectar saltos de línea (CRLF) permite ejecutar comandos.</p>
                             <div class="code-block p-2 rounded text-[10px]">
                                 SET backup_file /root/.ssh/authorized_keys
                             </div>
                         </div>
-
+        
                         <div class="p-4 rounded-lg" style="background-color: var(--bg-primary);">
                             <h4 class="text-sm font-bold mb-1" style="color: var(--text-primary);">GraphQL</h4>
                             <ul class="text-xs space-y-1 list-disc pl-4" style="color: var(--text-secondary);">
-                                <li><strong>Introspection:</strong> Consultar <code>__schema</code> revela toda la estructura.</li>
+                                <li><strong>Introspection:</strong> Consultar <code>__schema</code> revela toda la estructura.
+                                </li>
                                 <li><strong>Batching:</strong> 1000 queries en una petición (DoS/BruteForce).</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-
-                 <!-- Directory/Path Traversal Attack -->
+        
+                <!-- Directory/Path Traversal Attack -->
                 <div class="glass-card p-6 rounded-xl lg:col-span-2">
                     <h3 class="text-xl font-bold text-primary-color mb-2">Path Traversal</h3>
                     <p class="text-xs mb-4" style="color: var(--text-secondary);">Acceso fuera del directorio web.</p>
-                    <div class="flex items-center justify-between p-4 rounded border" style="background-color: var(--bg-secondary); border-color: var(--text-tertiary);">
+                    <div class="flex items-center justify-between p-4 rounded border"
+                        style="background-color: var(--bg-secondary); border-color: var(--text-tertiary);">
                         <div class="text-xs" style="color: var(--text-secondary);">http://app.com/file?name=report.pdf</div>
                         <div class="font-bold px-2" style="color: var(--text-primary);">➜</div>
-                        <div class="text-xs" style="color: var(--color-error);">http://app.com/file?name=../../../../etc/passwd</div>
+                        <div class="text-xs" style="color: var(--color-error);">http://app.com/file?name=../../../../etc/passwd
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Document-Based Auth Bypass Lab -->
+                <div class="glass-card p-6 rounded-xl border-l-4 border-primary-color mb-6">
+                    <h4 class="text-lg font-bold mb-3">Laboratorio: Bypass de Autenticación Documental</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <p class="text-xs text-secondary-color">Entrada Maliciosa (JSON):</p>
+                            <pre class="code-block p-3 rounded text-[10px]">
+        {
+            "user": "admin",
+            "pass": { "$ne": "null" }
+        }</pre>
+                        </div>
+                        <div>
+                            <p class="text-xs text-secondary-color">Análisis del Pentester:</p>
+                            <p class="text-[11px] mt-2">
+                                El motor procesa la consulta como: <br>
+                                <code class="text-primary-color">db.users.find({ user: "admin", pass: { $ne: "null" } })</code>
+                                <br><br>
+                                Al ser la contraseña real distinta a "null", la base de datos devuelve el objeto de usuario,
+                                concediendo acceso total.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -573,46 +616,84 @@
         <section id="mitigacion" class="tab-content hidden animate-fade-in">
             <div class="glass-card p-8 rounded-xl shadow-lg mb-8">
                 <h2 class="text-2xl font-bold text-secondary-color mb-6">Estrategia de Defensa 2025</h2>
-                
+        
                 <!-- Expandable defense strategies accordion -->
                 <div class="space-y-4" id="accordion-container">
-                    <div class="accordion-item rounded-lg overflow-hidden bg-tertiary">
-                        <button class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
-                            <span class="font-bold" style="color: var(--text-primary);">1. RASP (Runtime Application Self-Protection)</span>
-                            <span class="text-primary-color"><i data-lucide="plus"></i></span>
-                        </button>
-                        <div class="accordion-content hidden px-6 py-4 border-t" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
-                            <p class="text-sm" style="color: var(--text-secondary);">Más allá del WAF. RASP se ejecuta dentro de la aplicación e inspecciona las consultas SQL antes de que lleguen a la base de datos, bloqueando ataques en tiempo real, incluso si el tráfico parece legítimo.</p>
+                    
+                    <div class="glass-card p-6 rounded-xl border-l-4 border-error mb-8">
+                        <h3 class="text-xl font-bold text-primary-color mb-4">🛡️ Blind Attack Hardening</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <ul class="space-y-3 text-sm" style="color: var(--text-secondary);">
+                                <li class="flex items-start"><span class="mr-2 text-error">✖</span> <strong>Error
+                                        Masking:</strong> Desactivar logs técnicos en cliente para evitar fugas de esquema.</li>
+                                <li class="flex items-start"><span class="mr-2 text-error">✖</span> <strong>Input
+                                        Whitelisting:</strong> Solo permitir caracteres esperados (ej. alfanuméricos).</li>
+                            </ul>
+                            <ul class="space-y-3 text-sm" style="color: var(--text-secondary);">
+                                <li class="flex items-start"><span class="mr-2 text-success">✔</span> <strong>Type
+                                        Enforcement:</strong> Forzar (string) en NoSQL para anular operadores de objetos.</li>
+                                <li class="flex items-start"><span class="mr-2 text-success">✔</span> <strong>Rate
+                                        Limiting:</strong> Bloquear IPs que realicen ráfagas de consultas True/False.</li>
+                            </ul>
                         </div>
                     </div>
-
+        
                     <div class="accordion-item rounded-lg overflow-hidden bg-tertiary">
-                        <button class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
-                            <span class="font-bold" style="color: var(--text-primary);">2. Backups Inmutables y Air-Gapped</span>
+                        <button
+                            class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
+                            <span class="font-bold" style="color: var(--text-primary);">1. RASP (Runtime Application
+                                Self-Protection)</span>
                             <span class="text-primary-color"><i data-lucide="plus"></i></span>
                         </button>
-                        <div class="accordion-content hidden px-6 py-4 border-t" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
-                            <p class="text-sm" style="color: var(--text-secondary);">El Ransomware moderno busca y destruye backups online. La solución es usar almacenamiento WORM (Write Once Read Many) y mantener copias desconectadas físicamente (Air-Gapped).</p>
+                        <div class="accordion-content hidden px-6 py-4 border-t"
+                            style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                            <p class="text-sm" style="color: var(--text-secondary);">Más allá del WAF. RASP se ejecuta dentro de
+                                la aplicación e inspecciona las consultas SQL antes de que lleguen a la base de datos,
+                                bloqueando ataques en tiempo real, incluso si el tráfico parece legítimo.</p>
                         </div>
                     </div>
-
+        
                     <div class="accordion-item rounded-lg overflow-hidden bg-tertiary">
-                        <button class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
+                        <button
+                            class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
+                            <span class="font-bold" style="color: var(--text-primary);">2. Backups Inmutables y
+                                Air-Gapped</span>
+                            <span class="text-primary-color"><i data-lucide="plus"></i></span>
+                        </button>
+                        <div class="accordion-content hidden px-6 py-4 border-t"
+                            style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                            <p class="text-sm" style="color: var(--text-secondary);">El Ransomware moderno busca y destruye
+                                backups online. La solución es usar almacenamiento WORM (Write Once Read Many) y mantener copias
+                                desconectadas físicamente (Air-Gapped).</p>
+                        </div>
+                    </div>
+        
+                    <div class="accordion-item rounded-lg overflow-hidden bg-tertiary">
+                        <button
+                            class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
                             <span class="font-bold" style="color: var(--text-primary);">3. Zero Trust en Base de Datos</span>
                             <span class="text-primary-color"><i data-lucide="plus"></i></span>
                         </button>
-                        <div class="accordion-content hidden px-6 py-4 border-t" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
-                            <p class="text-sm" style="color: var(--text-secondary);">La base de datos no debe confiar ciegamente en la red interna. Se debe implementar autenticación fuerte (MFA) y mTLS (Mutual TLS) para validar cada conexión, no solo el perímetro.</p>
+                        <div class="accordion-content hidden px-6 py-4 border-t"
+                            style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                            <p class="text-sm" style="color: var(--text-secondary);">La base de datos no debe confiar ciegamente
+                                en la red interna. Se debe implementar autenticación fuerte (MFA) y mTLS (Mutual TLS) para
+                                validar cada conexión, no solo el perímetro.</p>
                         </div>
                     </div>
-                    
+        
                     <div class="accordion-item rounded-lg overflow-hidden bg-tertiary">
-                        <button class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
-                            <span class="font-bold" style="color: var(--text-primary);">4. CSPM (Cloud Security Posture Management)</span>
+                        <button
+                            class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left hover-bg transition-colors">
+                            <span class="font-bold" style="color: var(--text-primary);">4. CSPM (Cloud Security Posture
+                                Management)</span>
                             <span class="text-primary-color"><i data-lucide="plus"></i></span>
                         </button>
-                        <div class="accordion-content hidden px-6 py-4 border-t" style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
-                            <p class="text-sm" style="color: var(--text-secondary);">Herramientas automatizadas que escanean continuamente la nube (AWS, Azure) para detectar malas configuraciones, como buckets S3 públicos o grupos de seguridad demasiado permisivos, antes de que sean explotados.</p>
+                        <div class="accordion-content hidden px-6 py-4 border-t"
+                            style="background-color: var(--bg-primary); border-color: var(--text-tertiary);">
+                            <p class="text-sm" style="color: var(--text-secondary);">Herramientas automatizadas que escanean
+                                continuamente la nube (AWS, Azure) para detectar malas configuraciones, como buckets S3 públicos
+                                o grupos de seguridad demasiado permisivos, antes de que sean explotados.</p>
                         </div>
                     </div>
                 </div>

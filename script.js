@@ -136,4 +136,38 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    /* ============================================
+       AUDIT SPEED CHART
+       ============================================ */
+    const ctxAudit = document.getElementById('auditSpeedChart');
+if (ctxAudit) {
+    new Chart(ctxAudit, {
+        type: 'bar',
+        data: {
+            labels: ['Error-Based', 'UNION-Based', 'Boolean Blind', 'NoSQL Bypass'],
+            datasets: [{
+                label: 'Esfuerzo Temporal (Relativo)',
+                data: [15, 5, 80, 2], 
+                backgroundColor: [
+                    'rgba(250, 204, 21, 0.5)', // Amarillo (Warning)
+                    'rgba(74, 222, 128, 0.5)',  // Verde (Success)
+                    'rgba(248, 113, 113, 0.5)', // Rojo (Error/Lento)
+                    'rgba(0, 176, 240, 0.5)'    // Azul (Primary)
+                ],
+                borderColor: ['#facc15', '#4ade80', '#f87171', '#00B0F0'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y', // Barra horizontal para mejor lectura
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { grid: { color: '#2d3748' }, title: { display: true, text: 'Tiempo/Peticiones' } },
+                y: { grid: { display: false } }
+            }
+        }
+    });
+}
 });
